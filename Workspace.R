@@ -1,0 +1,6 @@
+getwd()
+setwd("C:/Users/michael/Documents/Progressive Overload Data")
+library(readr)
+library(tidyverse)
+library(ggplot2)
+fulldata <- read.csv("workoutlog.csv")
