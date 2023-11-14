@@ -45,7 +45,7 @@ View(sets_per_exercise)
 ##Change to DF and alter Column names for better understanding
 sets_per_exercse <- as.data.frame(sets_per_exercise)
 colnames(sets_per_exercse) <- c('Exercise','Total Sets')
-View(sets_per_exercise)
+View(sets_per_exercse)
 
 ##Calculate Total Volume in lbs
 total_volume <- date_sorted %>% 
@@ -57,5 +57,11 @@ exercise_vol_by_day <- total_volume %>%
   group_by(Date, Exercise) %>% 
   summarize(Sum_Total_Vol_LBs = sum(Total_Volume)) %>% 
   arrange(Date, desc(Sum_Total_Vol_LBs))
+
+##Chart 1 - Sets per Exercise
+sets_per_exercse %>% 
+  ggplot(mapping = aes(Exercise, `Total Sets`))+
+  geom_point()+
+  theme(axis.text.x = element_text(angle = 60, vjust = 1.0, hjust=1))
 
 
