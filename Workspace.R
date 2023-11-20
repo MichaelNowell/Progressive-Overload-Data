@@ -76,7 +76,7 @@ reps_per_day <- total_volume %>%
 View(reps_per_day)
 
 
-##Sets per day, rename column from 'n' to 'Sets', and arrange by Date and Sets
+##Sets per day by exercise, rename column from 'n' to 'Sets', and arrange by Date and Sets
 sets_per_day <- total_volume %>% 
   group_by(Date) %>% 
   count(Exercise) %>% 
@@ -85,8 +85,29 @@ sets_per_day <- total_volume %>%
   
 View(sets_per_day)
 
-  
+##Max weight per exercise per day, arranged by Date and Weight
+max_weight_per_exercise_day <- total_volume %>% 
+  group_by(Date, Exercise) %>% 
+  summarize(Max_Weight = max(Weight)) %>% 
+  arrange(Date, desc(Max_Weight))
+
+View(max_weight_per_exercise_day)
 
 
-##Need to chart sets, reps, and total volume by date and wrap by exercise 
-##so you can see progress of each movement over time
+##One rep max per exercise per day using the Brzycki equation - weight × (36 / (37 - reps))
+## Sorting for distinct results and arrange by Date and Highest 1RM
+One_RM_per_exercise_day <- total_volume %>% 
+  group_by(Date, Exercise) %>% 
+  mutate(One_Rep_Max = Weight*(36/(37 - Reps))) %>% 
+  slice_max(One_Rep_Max, n=1) %>% 
+  distinct(One_Rep_Max) %>% 
+  arrange(Date, desc(One_Rep_Max))
+
+View(One_RM_per_exercise_day)
+
+
+
+
+##Need to chart sets, reps, 1RM, max weight and total volume by date and wrap by exercise 
+##so you can see progress of each movement over time, 
+##set the date to be vertical so you can get each in view
