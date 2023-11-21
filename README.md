@@ -11,7 +11,7 @@ The main metrics of weight lifting are
 2. Sets - number of reps before taking a break
 3. Max Weight - highest weight actually lifted
 4. One Rep Maximum - an estimate of the possible max weight if only lifting for 1 rep, used the Brzycki formula for this equation
-5. Total Volume - measure of total work output found by Reps*Sets*Weight Lifted = Volume
+5. Total Volume - measure of total work output found by Reps x Sets x Weight Lifted = Volume
 
 After creating a data frame for each metric I was able to graph the outcome for each and facet wrap the graphs along exercises
 so that you can easily see increases or decreases for each metric and exercise over time. 
