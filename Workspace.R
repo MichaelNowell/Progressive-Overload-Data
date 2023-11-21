@@ -64,7 +64,11 @@ View(exercise_vol_by_day)
 sets_per_exercse %>% 
   ggplot(mapping = aes(Exercise, `Total Sets`))+
   geom_point()+
-  theme(axis.text.x = element_text(angle = 60, vjust = 1.0, hjust=1))
+  theme(axis.text.x = element_text(angle = 60, vjust = 1.0, hjust=1))+
+  labs(title ="Total Sets per Exercise", subtitle = "Which Exercises Had The Most Volume")+
+  theme(plot.title= element_text(hjust = .5))+
+  theme(plot.subtitle= element_text(hjust = .5))+
+  scale_y_continuous(breaks = waiver(), n.breaks = 15)
 
 
 ##Reps per day per exercise and arrange by Date and Reps
@@ -106,8 +110,82 @@ One_RM_per_exercise_day <- total_volume %>%
 View(One_RM_per_exercise_day)
 
 
+##Charts 2-6 to show progress for each exercise over time through various metrics, 
+##including Reps, Sets, Max Weight, One Rep Max, and Volume
+##
+reps_per_day %>% 
+  ggplot(mapping = aes(Date, Total_Reps))+
+  geom_line()+
+  labs(title ="Rep Progression Over Time", x="Month", y="Reps per Workout")+
+  theme(plot.title= element_text(hjust = .5))+
+  scale_x_date(date_breaks="1 month", date_labels="%b,%y")+
+  theme(axis.text.x = element_text(angle = 75, vjust = 1.0, hjust=1))+
+  scale_y_continuous(breaks = waiver(), n.breaks = 5)+
+  facet_wrap(~Exercise)
+ 
+sets_per_day %>% 
+  ggplot(mapping = aes(Date, Sets))+
+  geom_line()+
+  labs(title ="Sets per Workout Over Time", x="Month", y="Sets per Workout")+
+  theme(plot.title= element_text(hjust = .5))+
+  scale_x_date(date_breaks="1 month", date_labels="%b,%y")+
+  theme(axis.text.x = element_text(angle = 75, vjust = 1.0, hjust=1))+
+  scale_y_continuous(breaks = waiver(), n.breaks = 5)+
+  facet_wrap(~Exercise)
+
+max_weight_per_exercise_day %>% 
+  ggplot(mapping = aes(Date, Max_Weight))+
+  geom_line()+
+  labs(title ="Max Weight Lifted Each Workout", x="Month", y="Max Weight per Workout")+
+  theme(plot.title= element_text(hjust = .5))+
+  scale_x_date(date_breaks="1 month", date_labels="%b,%y")+
+  theme(axis.text.x = element_text(angle = 75, vjust = 1.0, hjust=1))+
+  scale_y_continuous(breaks = waiver(), n.breaks = 6)+
+  facet_wrap(~Exercise)
+  
+
+One_RM_per_exercise_day %>% 
+  ggplot(mapping = aes(Date, One_Rep_Max))+
+  geom_line()+
+  labs(title ="One Rep Maximum Over Time", x="Month", y="Estimated 1RM per Workout")+
+  theme(plot.title= element_text(hjust = .5))+
+  scale_x_date(date_breaks="1 month", date_labels="%b,%y")+
+  theme(axis.text.x = element_text(angle = 75, vjust = 1.0, hjust=1))+
+  ylim(0, 1800)+
+  facet_wrap(~Exercise)
+
+exercise_vol_by_day %>% 
+  ggplot(mapping = aes(Date, Sum_Total_Vol_LBs))+
+  geom_line()+
+  labs(title ="Total Workout Volume in LBs Over Time", x="Month", y="Total Volume per Workout")+
+  theme(plot.title= element_text(hjust = .5))+
+  scale_x_date(date_breaks="1 month", date_labels="%b,%y")+
+  theme(axis.text.x = element_text(angle = 75, vjust = 1.0, hjust=1))+
+  scale_y_continuous(breaks = waiver(), n.breaks = 6)+
+  facet_wrap(~Exercise)
 
 
-##Need to chart sets, reps, 1RM, max weight and total volume by date and wrap by exercise 
-##so you can see progress of each movement over time, 
-##set the date to be vertical so you can get each in view
+##Chart 7 - Smooth Trend Line for Sets/Reps/1RM/Max Weight to compare outcomes for each
+
+ggplot() + 
+  geom_line(data=reps_per_day, aes(x=Date, y=Total_Reps, colour="Reps")) + 
+  geom_line(data=sets_per_day, aes(x=Date, y=Sets, colour='Sets'))+
+  geom_line(data=One_RM_per_exercise_day, aes(x=Date, y=One_Rep_Max, colour='One_Rep_Max')) +
+  geom_line(data=max_weight_per_exercise_day, aes(x=Date, y=Max_Weight, colour='Max_Weight')) +
+  ylim(0,1600)+
+  labs(title ="Trend Lines for Sets/Reps/1RM/Max Weight Over Time", x="Month", y="Total Number")+
+  theme(plot.title= element_text(hjust = .5))+
+  scale_x_date(date_breaks="1 month", date_labels="%b,%y")+
+  theme(axis.text.x = element_text(angle = 75, vjust = 1.0, hjust=1))+
+  geom_smooth(method = "lm")+
+  facet_wrap(~Exercise)+
+  scale_color_manual(name='Metrics',
+                     breaks=c('Reps', 'Sets', 'One_Rep_Max', 'Max_Weight'),
+                     values=c('Reps'='red', 'Sets'='blue', 'One_Rep_Max'='purple', Max_Weight = 'green'))
+
+
+
+ 
+## Overall trend shows that lifts remained flat in general with the exception of calf exercises
+## This could be a function of losing weight during this time period
+## Indicated overall neep for more consistent tracking and Progressive Overloading
