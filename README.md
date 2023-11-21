@@ -5,7 +5,7 @@ to represent the need to continually increase the work performed in order to sti
 
 ## Method
 I extracted data from my workout tracking app running from 8/22 to 5/23 in order to map results. 
-To do this I organzied the file of almost 4,000 lines of data froma csv file using R Studio.
+To do this I organzied a csvfile of almost 4,000 lines of data using R Studio.
 The main metrics of weight lifting are 
 1. Reps - number of lifts of a certain weight at one time
 2. Sets - number of reps before taking a break
